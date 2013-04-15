@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/exposicion_view"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white" >
+
+    <gt.com.papiro.vista.Paginador
+        android:id="@+id/vista_presentacion_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center|fill"
+        android:layout_marginBottom="11dp"
+        android:layout_marginTop="131dp" >
+
+        <LinearLayout
+            android:id="@+id/vista_presentacion"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </gt.com.papiro.vista.Paginador>
+
+    <gt.com.papiro.vista.Paginador
+        android:id="@+id/vista_previa_presentacion_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="29dp"
+        android:alpha="0.95"
+        android:background="@color/white"
+        android:fadingEdgeLength="5dp"
+        android:paddingBottom="11dp"
+        android:paddingTop="11dp" >
+
+        <LinearLayout
+            android:id="@+id/vista_previa_presentacion"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </gt.com.papiro.vista.Paginador>
+
+    <ImageView
+        android:id="@+id/logo_anunciante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="29dp"
+        android:contentDescription="Logo" />
+    
+    <ImageView
+        android:id="@+id/qr_code_anuncio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:layout_marginTop="2dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="Codigo QR" />    
+
+    <ScrollView
+        android:id="@+id/vista_anuncio_scroll_view"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="29dp"
+        android:layout_marginTop="120dp" 
+        android:background="@drawable/esquinas_redondeadas" 
+        android:alpha="0.7">
+
+        <LinearLayout
+            android:id="@+id/vista_anuncio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+        </LinearLayout>
+    </ScrollView>
+
+    <include
+        android:layout_width="320dp"
+        android:layout_height="420dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="120dp"
+        layout="@layout/info_contacto"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/exposicion_view_boton_mostrar_info_contacto"
+        android:layout_width="150dp"
+        android:layout_height="84dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="29dp"
+        android:layout_marginTop="29dp"
+        android:text="@string/title_lo_quiero"
+        android:textSize="27sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/fondo_video"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/black"
+        android:orientation="vertical"
+        android:visibility="invisible" >
+
+        <VideoView
+            android:id="@+id/vista_video"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="invisible"             
+            />
+    </LinearLayout>
+
+</FrameLayout>

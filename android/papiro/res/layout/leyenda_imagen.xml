@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/leyenda_imagen_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|right"
+    android:layout_marginBottom="70dp"
+    android:layout_marginRight="70dp"
+    android:alpha="0.8"
+    android:background="@drawable/esquinas_redondeadas"
+    android:paddingBottom="7dp"
+    android:paddingLeft="7dp"
+    android:paddingRight="7dp"
+    android:paddingTop="7dp" >
+    
+    <TextView
+        android:id="@+id/leyenda_imagen_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="13dp"
+        android:text="TextView"
+        android:textColor="#FF000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:typeface="sans" />
+    
+    <TextView
+        android:id="@+id/leyenda_imagen_descripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/leyenda_imagen_titulo"
+        android:layout_gravity="fill_vertical"
+        android:paddingBottom="21dp"
+        android:paddingTop="7dp"
+        android:text="TextView"
+        android:textColor="#FF000000"
+        android:textSize="14sp"
+        android:typeface="sans" />
+
+</RelativeLayout>

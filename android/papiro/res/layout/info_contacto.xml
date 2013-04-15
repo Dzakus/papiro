@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/info_contacto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/esquinas_redondeadas"
+    android:paddingBottom="9dp"
+    android:paddingLeft="9dp"
+    android:paddingRight="9dp"
+    android:paddingTop="9dp" >
+
+    <TextView
+        android:id="@+id/info_contacto_encabezado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/title_info_contacto"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/black" />
+
+    <Spinner
+        android:id="@+id/info_contacto_tipo_cuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/info_contacto_encabezado"
+        android:entries="@array/array_tipos_de_contacto"
+        android:spinnerMode="dropdown"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/info_contacto_texto1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/info_contacto_tipo_cuenta"
+        android:text="@string/title_cuenta_de"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/black"
+        android:visibility="invisible" />
+
+    <EditText
+        android:id="@+id/info_contacto_cuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/info_contacto_texto1"
+        android:ems="10"
+        android:inputType="textEmailAddress" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/info_contacto_boton_enviar"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/info_contacto_cuenta"
+        android:text="Enviar"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/info_contacto_boton_gmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/info_contacto_cuenta"
+        android:layout_alignRight="@+id/info_contacto_cuenta"
+        android:layout_below="@+id/info_contacto_cuenta"
+        android:drawableRight="@drawable/google_32"
+        android:text=" @gmail.com" />
+    
+    <Button
+        android:id="@+id/info_contacto_boton_facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/info_contacto_cuenta"
+        android:layout_alignRight="@+id/info_contacto_cuenta"
+        android:layout_below="@+id/info_contacto_boton_gmail"
+        android:drawableRight="@drawable/facebook_32"
+        android:text=" @facebook.com" />
+
+    <Button
+        android:id="@+id/info_contacto_boton_twitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/info_contacto_cuenta"
+        android:layout_alignRight="@+id/info_contacto_cuenta"
+        android:layout_below="@+id/info_contacto_boton_facebook"
+        android:drawableRight="@drawable/twitter_32"
+        android:text=" @twitter.com" />
+
+    <Button
+        android:id="@+id/info_contacto_boton_hotmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/info_contacto_cuenta"
+        android:layout_alignRight="@+id/info_contacto_cuenta"
+        android:layout_below="@+id/info_contacto_boton_twitter"
+        android:drawableRight="@drawable/windows_32"
+        android:text=" @hotmail.com" />
+
+    <Button
+        android:id="@+id/info_contacto_boton_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/info_contacto_cuenta"
+        android:layout_alignRight="@+id/info_contacto_cuenta"
+        android:layout_below="@+id/info_contacto_boton_hotmail"
+        android:drawableRight="@drawable/email_32"
+        android:text="Otros" />
+
+    <Button
+        android:id="@+id/info_contacto_boton_telefono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/info_contacto_cuenta"
+        android:layout_alignRight="@+id/info_contacto_cuenta"        
+        android:layout_below="@+id/info_contacto_boton_email"
+        android:drawableRight="@drawable/phone_32"
+        android:text="Teléfono" />
+    
+</RelativeLayout>
