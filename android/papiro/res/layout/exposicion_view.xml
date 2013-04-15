@@ -49,14 +49,14 @@
         android:layout_marginLeft="29dp"
         android:layout_marginTop="29dp"
         android:contentDescription="Logo" />
-    
+
     <ImageView
         android:id="@+id/qr_code_anuncio"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"        
-        android:layout_marginTop="2dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:contentDescription="Codigo QR" />    
+        android:layout_marginTop="2dp"
+        android:contentDescription="Codigo QR" />
 
     <ScrollView
         android:id="@+id/vista_anuncio_scroll_view"
@@ -64,9 +64,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginRight="29dp"
-        android:layout_marginTop="120dp" 
-        android:background="@drawable/esquinas_redondeadas" 
-        android:alpha="0.7">
+        android:layout_marginTop="120dp"
+        android:alpha="0.7"
+        android:background="@drawable/esquinas_redondeadas" >
 
         <LinearLayout
             android:id="@+id/vista_anuncio"
@@ -75,7 +75,6 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:orientation="vertical" >
-
         </LinearLayout>
     </ScrollView>
 
@@ -101,18 +100,23 @@
 
     <LinearLayout
         android:id="@+id/fondo_video"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/black"
         android:orientation="vertical"
         android:visibility="invisible" >
 
         <VideoView
             android:id="@+id/vista_video"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:visibility="invisible"             
-            />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
     </LinearLayout>
 
 </FrameLayout>

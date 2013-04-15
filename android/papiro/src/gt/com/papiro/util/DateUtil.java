@@ -9,7 +9,6 @@ import java.util.Date;
 public class DateUtil {
 
 	public DateUtil() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public static String getDateAsIso8601(Date date) {

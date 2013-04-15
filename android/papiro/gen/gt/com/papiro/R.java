@@ -40,33 +40,33 @@ public final class R {
         public static final int windows_32=0x7f02000c;
     }
     public static final class id {
-        public static final int ad_detail=0x7f09000e;
+        public static final int ad_detail=0x7f09000f;
         public static final int ad_detail_container=0x7f090000;
         public static final int ad_list=0x7f090001;
         public static final int exposicion_view=0x7f090002;
         public static final int exposicion_view_boton_mostrar_info_contacto=0x7f09000b;
         public static final int fondo_video=0x7f09000c;
-        public static final int fragment_ad_list_fragment=0x7f09001e;
-        public static final int info_contacto=0x7f09000f;
-        public static final int info_contacto_boton_email=0x7f090019;
-        public static final int info_contacto_boton_enviar=0x7f090014;
-        public static final int info_contacto_boton_facebook=0x7f090016;
-        public static final int info_contacto_boton_gmail=0x7f090015;
-        public static final int info_contacto_boton_hotmail=0x7f090018;
-        public static final int info_contacto_boton_telefono=0x7f09001a;
-        public static final int info_contacto_boton_twitter=0x7f090017;
-        public static final int info_contacto_cuenta=0x7f090013;
-        public static final int info_contacto_encabezado=0x7f090010;
-        public static final int info_contacto_texto1=0x7f090012;
-        public static final int info_contacto_tipo_cuenta=0x7f090011;
-        public static final int leyenda_imagen_descripcion=0x7f09001d;
-        public static final int leyenda_imagen_layout=0x7f09001b;
-        public static final int leyenda_imagen_titulo=0x7f09001c;
+        public static final int fragment_ad_list_fragment=0x7f09001f;
+        public static final int info_contacto=0x7f090010;
+        public static final int info_contacto_boton_email=0x7f09001a;
+        public static final int info_contacto_boton_enviar=0x7f090015;
+        public static final int info_contacto_boton_facebook=0x7f090017;
+        public static final int info_contacto_boton_gmail=0x7f090016;
+        public static final int info_contacto_boton_hotmail=0x7f090019;
+        public static final int info_contacto_boton_telefono=0x7f09001b;
+        public static final int info_contacto_boton_twitter=0x7f090018;
+        public static final int info_contacto_cuenta=0x7f090014;
+        public static final int info_contacto_encabezado=0x7f090011;
+        public static final int info_contacto_texto1=0x7f090013;
+        public static final int info_contacto_tipo_cuenta=0x7f090012;
+        public static final int leyenda_imagen_descripcion=0x7f09001e;
+        public static final int leyenda_imagen_layout=0x7f09001c;
+        public static final int leyenda_imagen_titulo=0x7f09001d;
         public static final int logo_anunciante=0x7f090007;
         public static final int qr_code_anuncio=0x7f090008;
-        public static final int texto_con_imagen_imagen=0x7f090020;
-        public static final int texto_con_imagen_row=0x7f09001f;
-        public static final int texto_con_imagen_texto=0x7f090021;
+        public static final int texto_con_imagen_imagen=0x7f090021;
+        public static final int texto_con_imagen_row=0x7f090020;
+        public static final int texto_con_imagen_texto=0x7f090022;
         public static final int vista_anuncio=0x7f09000a;
         public static final int vista_anuncio_scroll_view=0x7f090009;
         public static final int vista_presentacion=0x7f090004;
@@ -74,6 +74,7 @@ public final class R {
         public static final int vista_previa_presentacion=0x7f090006;
         public static final int vista_previa_presentacion_scroll_view=0x7f090005;
         public static final int vista_video=0x7f09000d;
+        public static final int webview=0x7f09000e;
     }
     public static final class layout {
         public static final int activity_ad_detail=0x7f030000;

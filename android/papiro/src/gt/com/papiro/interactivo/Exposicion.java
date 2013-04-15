@@ -77,6 +77,7 @@ import android.view.SurfaceHolder;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
@@ -232,7 +233,11 @@ public class Exposicion extends Activity {
 		botonMostrarInfoContacto.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				logEvent("objetivo", "imagen", getIdPresentacionActual(), "");
-				mostrarInfoContacto();
+				if (getAnuncioActual().getLink() == null || getAnuncioActual().getLink().trim().isEmpty()) {
+					mostrarInfoContacto();
+				} else {
+					mostrarNavegador(getAnuncioActual().getLink());
+				}
 			}
 		});
 
@@ -366,10 +371,10 @@ public class Exposicion extends Activity {
 				Log.i(TAG, "Revisando inactividad");
 
 				if (now - ultimoToqueTime >= getPreferencias().getInactivityInterval()) {
-					Log.i(TAG, "Ocultando la informacion de contacto");
+					Log.i(TAG, "Ocultando popups");
 					runOnUiThread(new Runnable() {
 						public void run() {
-							ocultarInfoContacto();
+							ocultarPopups();
 						}
 					});
 				}
@@ -649,6 +654,26 @@ public class Exposicion extends Activity {
 		cuentaContacto.clearFocus();
 		imm.hideSoftInputFromWindow(cuentaContacto.getWindowToken(), 0);
 		infoContacto.setVisibility(View.INVISIBLE);
+	}
+	
+	private void mostrarNavegador(String link) {
+		WebView webView = (WebView) findViewById(R.id.webview);
+		
+		webView.loadUrl(link);
+		
+		webView.setVisibility(View.VISIBLE);
+	}
+	
+	private void ocultarNavegador() {
+		WebView webView = (WebView) findViewById(R.id.webview);
+		
+		webView.setVisibility(View.INVISIBLE);
+	}
+	
+	private void ocultarPopups() {
+		ocultarInfoContacto();
+		ocultarVistaVideo();
+		ocultarNavegador();
 	}
 
 	private void guardarAnunciantes() {
