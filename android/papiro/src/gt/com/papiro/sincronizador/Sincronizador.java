@@ -116,6 +116,9 @@ public class Sincronizador extends AsyncTask<Void, Void, DispositivoRs>{
 	}
 
 	private void processAnuncios(List<AnuncioRs> anuncios) throws IOException {		
+		if(anuncios == null){
+			return;
+		}
 		numeroAnuncios = anuncios.size();
 		File f = new File(baseFile);
 		FileUtil.deleteRecursive(f);

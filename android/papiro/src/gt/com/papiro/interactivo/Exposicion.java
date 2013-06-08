@@ -926,8 +926,7 @@ public class Exposicion extends Activity {
 		return eventMonitor;
 	}
 	
-	public void sincronizarTick(){
-		System.out.println("Ejecutando sincronizacion tick");
+	public void sincronizarTick(){		
 		if(sincronizador == null || (sincronizador.isFinalizo() && !sincronizador.isSincronizar())){									
 			try{
 				config = (DispositivoConfig)MappingUtil.loadObjectFromFile(new File(baseFile + "sincronizador.json"), DispositivoConfig.class);
@@ -943,17 +942,19 @@ public class Exposicion extends Activity {
 			String tempFile = Environment.getExternalStorageDirectory() + "/temp/ads/";
 			File actual = new File(baseFile + config.getId());
 			File nuevo = new File(tempFile);										
-			try {
+			try {				
+				FileUtil.deleteRecursive(actual);
 				FileUtil.copyDirectory(nuevo, actual);
 				System.out.println("Sincronizacion exitosa, sincronizado: ");										
 				cargarAnunciantes();
+				FileUtil.deleteRecursive(nuevo);
 			} catch (IOException e) {					 
 				e.printStackTrace();
 			}			
 			sincronizador = null;							
 		}else if(sincronizador.isFinalizo()){
 			sincronizador = null;
-		}
+		}		
 	}
 
 }
