@@ -113,7 +113,9 @@ public class Exposicion extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+		getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		iniciarSincronizadorServices();
 		
 		videos = new LinkedList<Presentacion>();
@@ -407,6 +409,7 @@ public class Exposicion extends Activity {
 							VideoView vv = (VideoView) findViewById(R.id.vista_video);
 
 							if (!vv.isPlaying() && !startingVideoPlayback) {
+								probarSincronizacion();
 								mostrarSiguienteAnuncio();
 							} else {
 								Log.i(TAG, "Hay un video reproduciendose, no se mostrara el siguiente anuncio hasta que acabe");
@@ -419,7 +422,7 @@ public class Exposicion extends Activity {
 						public void run() {
 							VideoView vv = (VideoView) findViewById(R.id.vista_video);
 
-							if (!vv.isPlaying() && !startingVideoPlayback) {
+							if (!vv.isPlaying() && !startingVideoPlayback) {	
 								mostrarSiguienteVideo(true);
 							} else {
 								Log.i(TAG, "Hay un video reproduciendose, no se mostrara el siguiente video hasta que acabe");
@@ -566,12 +569,13 @@ public class Exposicion extends Activity {
 				v = new VistaPresentacionImagen(this, presentacion, true);
 				v.setLayoutParams(new ViewGroup.LayoutParams(120, 120));
 				contenedorVistasPrevias.addView(v);
-
+				((VistaPresentacionImagen)v).loadMedia();
 				v = new VistaPresentacionImagen(this, presentacion, false);
 				Log.i(Exposicion.class.getName(), "width: " + getWidth());
 				v.setLayoutParams(new ViewGroup.LayoutParams(getWidth(), ViewGroup.LayoutParams.MATCH_PARENT));
 				contenedorVistas.addView(v);
-
+				((VistaPresentacionImagen)v).loadMedia();
+				
 				break;
 			case VIDEO:
 				/*
@@ -596,7 +600,6 @@ public class Exposicion extends Activity {
 	}
 
 	public void mostrarSiguienteVideo(boolean principal) {
-		probarSincronizacion();
 		Log.i(TAG, "Mostrando el siguiente video");
 
 		Presentacion presentacionInicial = videos.peek();
@@ -629,7 +632,7 @@ public class Exposicion extends Activity {
 
 		vv.setVisibility(View.VISIBLE);
 		v.setVisibility(View.VISIBLE);
-		//Exposicion.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		Exposicion.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 	}
 
 	public void ocultarVistaVideo() {
@@ -725,7 +728,6 @@ public class Exposicion extends Activity {
 	
 	private void ocultarPopups() {
 		ocultarInfoContacto();
-		ocultarVistaVideo();
 		ocultarNavegador();
 	}
 
@@ -934,7 +936,7 @@ public class Exposicion extends Activity {
 			}
 			sincronizador = new Sincronizador(service, credential, true, config);		
 			sincronizador.execute();
-		}		
+		}	
 	}
 	public void probarSincronizacion(){
 		if(sincronizador.isFinalizo() && sincronizador.isSuccessful() && sincronizador.isSincronizar()){						
@@ -945,7 +947,6 @@ public class Exposicion extends Activity {
 				FileUtil.copyDirectory(nuevo, actual);
 				System.out.println("Sincronizacion exitosa, sincronizado: ");										
 				cargarAnunciantes();
-				actualizarListaAnuncios();
 			} catch (IOException e) {					 
 				e.printStackTrace();
 			}			

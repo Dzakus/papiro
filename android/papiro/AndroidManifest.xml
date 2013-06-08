@@ -68,15 +68,18 @@
         </activity>
         <activity
             android:name="gt.com.papiro.ConfigActivity"
-            android:label="@string/title_activity_config" >
+            android:label="@string/title_activity_config" 
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="gt.com.papiro.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login" 
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="gt.com.papiro.Authentication"
-            android:label="@string/title_activity_authentication" >
+            android:label="@string/title_activity_authentication" 
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

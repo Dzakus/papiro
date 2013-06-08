@@ -22,7 +22,7 @@ public class SystemUtil {
 	public static void hideStatusBar() {
 		Process proc;
 		try {
-			proc = Runtime.getRuntime().exec(new String[] { "su", "-c", "service call activity 79 s16 com.android.systemui" });
+			proc = Runtime.getRuntime().exec(new String[] { "su", "-c", "service call activity 42 s16 com.android.systemui" });
 			proc.waitFor();
 		} catch (Exception e) {
 			Log.e("SystemUtil", "Error al ocultar la barra de estado", e);

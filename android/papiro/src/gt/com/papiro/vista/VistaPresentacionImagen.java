@@ -11,6 +11,7 @@ import gt.com.papiro.util.ImageUtil;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -35,7 +36,7 @@ public class VistaPresentacionImagen extends FrameLayout implements Presentable 
 
 	private void init(Context context, AttributeSet attrs, int defStyle,
 			Presentacion presentacion, boolean vistaPrevia) {
-
+		
 		this.imagen = new ImageView(context, attrs, defStyle);
 		this.leyendaImagen = (ViewGroup) inflate(context, R.layout.leyenda_imagen, null);
 		this.presentacion = presentacion;
@@ -60,7 +61,6 @@ public class VistaPresentacionImagen extends FrameLayout implements Presentable 
 
 		leyendaImagen.setVisibility(INVISIBLE);
 
-		loadMedia();
 	}
 
 	public VistaPresentacionImagen(Context context, Presentacion presentacion,
@@ -85,32 +85,29 @@ public class VistaPresentacionImagen extends FrameLayout implements Presentable 
 		init(context, null, 0, presentacion, vistaPrevia);
 	}
 
-	private void loadMedia() {
+	public void loadMedia() {
 		
 		if (presentacion == null) {
 			return;
 		}
+		Rect rect = new Rect();
+		StringBuilder path = new StringBuilder();
 		
-		BitmapFactory.Options opts=new BitmapFactory.Options();
-		opts.inDither=false;                     //Disable Dithering mode
-		opts.inPurgeable=true;                   //Tell to gc that whether it needs free memory, the Bitmap can be cleared
-		opts.inInputShareable=true;              //Which kind of reference will be used to recover the Bitmap data after being clear, when it will be used in the future
-		opts.inTempStorage=new byte[32 * 1024]; 
-
+		path.append(Environment.getExternalStorageDirectory());
+		path.append("/ads/");
+		path.append(presentacion.getAnuncio().getAnunciante().getId());
+		path.append("/anuncios/");
+		path.append(presentacion.getAnuncio().getId());
+		path.append("/");
+		
 		if (vistaPrevia) {
 			Log.d(VistaPresentacionImagen.class.getSimpleName(), presentacion.getThumbnail().toString());
-			//this.imagen.setImageBitmap(ImageUtil.getBitmapFromUri(presentacion.getThumbnail()));
-			//this.imagen.setImageURI(presentacion.getThumbnail());
-			System.out.println(Environment.getExternalStorageDirectory() + "/ads/" + presentacion.getAnuncio().getAnunciante().getId() + "/anuncios/" + presentacion.getAnuncio().getId() + "/" + presentacion.getThumbnail());
-			this.imagen.setImageBitmap(BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/ads/" + presentacion.getAnuncio().getAnunciante().getId() + "/anuncios/" + presentacion.getAnuncio().getId() + "/" + presentacion.getThumbnail(), opts));
-			
+			path.append(presentacion.getThumbnail()); 
 		} else {
 			Log.d(VistaPresentacionImagen.class.getSimpleName(), presentacion.getFullview().toString());
-			//this.imagen.setImageBitmap(ImageUtil.getBitmapFromUri(presentacion.getFullview()));
-			//this.imagen.setImageURI(presentacion.getFullview());			
-			System.out.println(Environment.getExternalStorageDirectory() + "/ads/" + presentacion.getAnuncio().getAnunciante().getId() + "/anuncios/" + presentacion.getAnuncio().getId() + "/" + presentacion.getThumbnail());
-			this.imagen.setImageBitmap(BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/ads/" + presentacion.getAnuncio().getAnunciante().getId() + "/anuncios/" + presentacion.getAnuncio().getId() + "/" + presentacion.getFullview(), opts));
+			path.append(presentacion.getFullview());
 		}
+		this.imagen.setImageBitmap(ImageUtil.decodeSampledBitmapFromFile(path.toString(), this.getLayoutParams().width, this.getLayoutParams().height));
 	}
 
 	public void presentar() {
