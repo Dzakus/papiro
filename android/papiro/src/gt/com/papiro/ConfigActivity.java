@@ -9,6 +9,7 @@ import gt.com.papiro.sincronizador.model.DispositivoConfig;
 import gt.com.papiro.util.Constants;
 import gt.com.papiro.util.FileUtil;
 import gt.com.papiro.util.MappingUtil;
+import gt.com.papiro.util.SystemUtil;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -54,6 +55,7 @@ public class ConfigActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		SystemUtil.showStatusBar();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_config);
 		iniciarSincronizadorServices();
@@ -79,6 +81,7 @@ public class ConfigActivity extends Activity {
 		if(ingresaDispositivo){
 			validarDispositivo();
 		} else{
+			SystemUtil.hideStatusBar();
 			Intent intent = new Intent(getThis(), Exposicion.class);		
 			startActivity(intent);
 		}
@@ -175,6 +178,7 @@ public class ConfigActivity extends Activity {
                 }
                 if(device.isSuccess()){
                 	device.probarSincronizacion();
+                	SystemUtil.hideStatusBar();
                 	Intent intent = new Intent(getThis(), Exposicion.class);		
         			startActivity(intent);
                 }else{

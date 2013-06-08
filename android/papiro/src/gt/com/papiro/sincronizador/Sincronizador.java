@@ -101,11 +101,8 @@ public class Sincronizador extends AsyncTask<Void, Void, DispositivoRs>{
 				
 		} catch (IOException e) {
 			progress = 100;			
-			e.printStackTrace();
 		} catch(Exception e){
-			e.printStackTrace();
 		} catch(Error error){
-			error.printStackTrace();
 		}
 		finalizo = true;
 		successful = false;
