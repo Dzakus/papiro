@@ -944,6 +944,7 @@ public class Exposicion extends Activity {
 			File nuevo = new File(tempFile);										
 			try {				
 				FileUtil.deleteRecursive(actual);
+								
 				FileUtil.copyDirectory(nuevo, actual);
 				System.out.println("Sincronizacion exitosa, sincronizado: ");										
 				cargarAnunciantes();
