@@ -1,55 +1,47 @@
 package gt.com.papiro.interactivo;
 
+import gt.com.papiro.R;
+import gt.com.papiro.adaptador.TextoConImagenAdapter;
+import gt.com.papiro.configuracion.Preferencias;
+import gt.com.papiro.events.EventMonitor;
+import gt.com.papiro.modelo.Anunciante;
+import gt.com.papiro.modelo.Anuncio;
+import gt.com.papiro.modelo.Presentable;
+import gt.com.papiro.modelo.Presentacion;
+import gt.com.papiro.sincronizador.Sincronizador;
+import gt.com.papiro.sincronizador.model.DispositivoConfig;
+import gt.com.papiro.task.UnZipper;
+import gt.com.papiro.util.Constants;
+import gt.com.papiro.util.FileUtil;
+import gt.com.papiro.util.HttpUtil;
+import gt.com.papiro.util.MappingUtil;
+import gt.com.papiro.util.QrUtil;
+import gt.com.papiro.vista.ContactUtil;
+import gt.com.papiro.vista.Paginador;
+import gt.com.papiro.vista.VistaAnuncio;
+import gt.com.papiro.vista.VistaPresentacionImagen;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.InputStreamReader;
-import java.lang.reflect.Method;
-import java.sql.Date;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Stack;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
-
-import gt.com.papiro.R;
-import gt.com.papiro.adaptador.TextoConImagenAdapter;
-import gt.com.papiro.configuracion.Preferencias;
-import gt.com.papiro.events.EventMonitor;
-import gt.com.papiro.main.Entrada;
-import gt.com.papiro.modelo.Anunciante;
-import gt.com.papiro.modelo.Anuncio;
-import gt.com.papiro.modelo.Presentable;
-import gt.com.papiro.modelo.Presentacion;
-import gt.com.papiro.task.UnZipper;
-import gt.com.papiro.util.FileUtil;
-import gt.com.papiro.util.HttpUtil;
-import gt.com.papiro.util.QrUtil;
-import gt.com.papiro.vista.ContactUtil;
-import gt.com.papiro.vista.Paginador;
-import gt.com.papiro.vista.VistaAnuncio;
-import gt.com.papiro.vista.VistaPresentacionImagen;
-import gt.com.papiro.vista.VistaPresentacionVideo;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.content.res.Resources;
 import android.graphics.Point;
-import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
@@ -59,33 +51,35 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcel;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
-import android.view.Surface;
+import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.view.SurfaceHolder;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.VideoView;
+import android.graphics.Bitmap;
+
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.papiro.Papiro;
+import com.google.gson.Gson;
 
 public class Exposicion extends Activity {
 	private static final String TAG = "Exposicion";
@@ -95,6 +89,11 @@ public class Exposicion extends Activity {
 	List<Anuncio> anuncios;
 
 	Queue<Presentacion> videos;
+	private GoogleAccountCredential credential;
+	private SharedPreferences settings;
+	private Papiro service;	
+	private DispositivoConfig config;
+	private String baseFile;
 
 	// Servicios:
 	private Preferencias preferencias;
@@ -108,12 +107,15 @@ public class Exposicion extends Activity {
 	boolean exposicionIniciada = false;
 	boolean startingVideoPlayback = false;
 	int indiceAnuncioActual = -1;
-
+	private Sincronizador sincronizador;
+	
 	// Eventos:
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		iniciarSincronizadorServices();
+		
 		videos = new LinkedList<Presentacion>();
 
 		this.setContentView(R.layout.exposicion_view);
@@ -124,6 +126,8 @@ public class Exposicion extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		exposicionView.setKeepScreenOn(true);
+		
+		
 		
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -149,6 +153,24 @@ public class Exposicion extends Activity {
 		ocultarInfoContacto();
 
 		exposicionIniciada = true;
+	}
+
+	private void iniciarSincronizadorServices() {
+		baseFile = Environment.getExternalStorageDirectory() + "/ads/";
+		settings = getSharedPreferences("PapiroService", 0);
+		credential = GoogleAccountCredential.usingAudience(this, "server:client_id:" + Constants.CLIENT_ID);		
+		setAccountName(settings.getString(Constants.PREF_ACCOUNT_NAME, null));				
+		Papiro.Builder builder = new Papiro.Builder(AndroidHttp.newCompatibleTransport(), new GsonFactory(), null);
+		service = builder.build(); 
+		
+	} 
+	
+	private void setAccountName(String accountName) {
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString(Constants.PREF_ACCOUNT_NAME, accountName);
+		editor.commit();
+		System.out.println("Setteando account name");
+		credential.setSelectedAccountName(accountName);		
 	}
 
 	@Override
@@ -207,7 +229,7 @@ public class Exposicion extends Activity {
 				final String tipoCuenta = ((Button)v).getText().toString();
 				
 				ocultarInfoContacto();
-				Toast.makeText(Exposicion.this, "Gracias por su interés", Toast.LENGTH_LONG).show();
+				Toast.makeText(Exposicion.this, "Gracias por su interï¿½s", Toast.LENGTH_LONG).show();
 				new Thread(new Runnable() {
 					public void run() {
 						ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -233,7 +255,7 @@ public class Exposicion extends Activity {
 		botonMostrarInfoContacto.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				logEvent("objetivo", "imagen", getIdPresentacionActual(), "");
-				if (getAnuncioActual().getLink() == null || getAnuncioActual().getLink().trim().isEmpty()) {
+				if (getAnuncioActual().getLink() == null || getAnuncioActual().getLink().trim().isEmpty() || getAnuncioActual().getLink().contains("@")) {					
 					mostrarInfoContacto();
 				} else {
 					mostrarNavegador(getAnuncioActual().getLink());
@@ -366,8 +388,8 @@ public class Exposicion extends Activity {
 		scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
 
 			public void run() {
-				long now = Calendar.getInstance().getTimeInMillis();
-
+				sincronizarTick();
+				long now = Calendar.getInstance().getTimeInMillis();				
 				Log.i(TAG, "Revisando inactividad");
 
 				if (now - ultimoToqueTime >= getPreferencias().getInactivityInterval()) {
@@ -424,7 +446,7 @@ public class Exposicion extends Activity {
 	public void pararVideo() {
 		Log.i(TAG, "Parando video");
 		VideoView vv = (VideoView) findViewById(R.id.vista_video);
-		vv.stopPlayback();
+		vv.stopPlayback();		
 	}
 
 	public void actualizarListaAnuncios() {
@@ -533,8 +555,8 @@ public class Exposicion extends Activity {
 		vistaPreviaPresentacionScrollView.goToPage(0);
 
 		logoAnunciante.setImageURI(Uri.parse("file://" + Environment.getExternalStorageDirectory() + "/ads/" + anuncio.getAnunciante().getId() + "/" + anuncio.getAnunciante().getLogo()));
-		if (anuncio.getLink() != null && !anuncio.getLink().isEmpty()) {
-			qrCodeAnuncio.setImageBitmap(QrUtil.generateQrCodeFromString(anuncio.getLink(), 128, 128));
+		if (anuncio.getQrurl() != null && !anuncio.getQrurl().isEmpty()) {
+			qrCodeAnuncio.setImageBitmap(QrUtil.generateQrCodeFromString(anuncio.getQrurl(), 128, 128));
 		}
 
 		for (Presentacion presentacion : anuncio.getPresentaciones()) {
@@ -574,6 +596,7 @@ public class Exposicion extends Activity {
 	}
 
 	public void mostrarSiguienteVideo(boolean principal) {
+		probarSincronizacion();
 		Log.i(TAG, "Mostrando el siguiente video");
 
 		Presentacion presentacionInicial = videos.peek();
@@ -589,6 +612,7 @@ public class Exposicion extends Activity {
 
 			if (presentacion.isPrincipal() || !principal) {
 				Exposicion.this.logEvent("impresion", "video", presentacion.getId(), presentacion.getFullview());
+				System.out.println("Video URI: " + "file://" + Environment.getExternalStorageDirectory() + "/ads/" + presentacion.getAnuncio().getAnunciante().getId() + "/anuncios/" + presentacion.getAnuncio().getId() + "/" + presentacion.getFullview());
 				playVideoFromUri(Uri.parse("file://" + Environment.getExternalStorageDirectory() + "/ads/" + presentacion.getAnuncio().getAnunciante().getId() + "/anuncios/" + presentacion.getAnuncio().getId() + "/" + presentacion.getFullview()));
 				break;
 			}
@@ -605,7 +629,7 @@ public class Exposicion extends Activity {
 
 		vv.setVisibility(View.VISIBLE);
 		v.setVisibility(View.VISIBLE);
-		Exposicion.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		//Exposicion.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 	}
 
 	public void ocultarVistaVideo() {
@@ -622,6 +646,7 @@ public class Exposicion extends Activity {
 		fondo.startAnimation(fadeInAnimation);
 		v.startAnimation(fadeOutAnimation);
 		Exposicion.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
 	}
 
 	public void mostrarInfoContacto() {
@@ -657,17 +682,45 @@ public class Exposicion extends Activity {
 	}
 	
 	private void mostrarNavegador(String link) {
+		View v = findViewById(R.id.fondo_webview);
 		WebView webView = (WebView) findViewById(R.id.webview);
+		//TODO: ARREGLAR CODIGO
+		webView.setWebViewClient(new WebViewClient() {
+		    private String pendingUrl;
+
+		    @Override
+		    public void onPageStarted(WebView view, String url, Bitmap favicon) {
+		        if (pendingUrl == null) {
+		            pendingUrl = url;
+		        }
+		    }
+
+		    @Override
+		    public void onPageFinished(WebView view, String url) {
+		        if (!url.equals(pendingUrl)) {
+		            Log.d(TAG, "Detected HTTP redirect " + pendingUrl + "->" + url);
+		            pendingUrl = null;
+		        }
+		    }
+		});
 		
-		webView.loadUrl(link);
+		webView.getSettings().setJavaScriptEnabled(true);
+		webView.loadUrl("http://"+link);
+		webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 		
-		webView.setVisibility(View.VISIBLE);
+		v.setVisibility(View.VISIBLE);
+		webView.setVisibility(View.VISIBLE);		
+		
 	}
 	
 	private void ocultarNavegador() {
 		WebView webView = (WebView) findViewById(R.id.webview);
+		View v = findViewById(R.id.fondo_webview);
 		
+		
+		v.setVisibility(View.INVISIBLE);
 		webView.setVisibility(View.INVISIBLE);
+		webView.loadUrl("about:blank");
 	}
 	
 	private void ocultarPopups() {
@@ -803,7 +856,7 @@ public class Exposicion extends Activity {
 
 			}
 
-			public void onAnimationEnd(Animation animation) {
+			public void onAnimationEnd(Animation animation) {				
 				mostrarVistaVideo();
 				vv.requestFocus();
 				vv.start();
@@ -869,6 +922,37 @@ public class Exposicion extends Activity {
 		}
 
 		return eventMonitor;
+	}
+	
+	public void sincronizarTick(){
+		System.out.println("Ejecutando sincronizacion tick");
+		if(sincronizador == null || (sincronizador.isFinalizo() && !sincronizador.isSincronizar())){									
+			try{
+				config = (DispositivoConfig)MappingUtil.loadObjectFromFile(new File(baseFile + "sincronizador.json"), DispositivoConfig.class);
+			}catch(Exception ex){
+				config = new DispositivoConfig();
+			}
+			sincronizador = new Sincronizador(service, credential, true, config);		
+			sincronizador.execute();
+		}		
+	}
+	public void probarSincronizacion(){
+		if(sincronizador.isFinalizo() && sincronizador.isSuccessful() && sincronizador.isSincronizar()){						
+			String tempFile = Environment.getExternalStorageDirectory() + "/temp/ads/";
+			File actual = new File(baseFile + config.getId());
+			File nuevo = new File(tempFile);										
+			try {
+				FileUtil.copyDirectory(nuevo, actual);
+				System.out.println("Sincronizacion exitosa, sincronizado: ");										
+				cargarAnunciantes();
+				actualizarListaAnuncios();
+			} catch (IOException e) {					 
+				e.printStackTrace();
+			}			
+			sincronizador = null;							
+		}else if(sincronizador.isFinalizo()){
+			sincronizador = null;
+		}
 	}
 
 }

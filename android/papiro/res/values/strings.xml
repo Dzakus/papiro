@@ -1,14 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Papiro</string>
     <string name="title_ad_detail">Ad Detail</string>
     <string name="title_ad_list">Ads</string>
-	<color name="white">#FFFFFF</color>
-	<color name="black">#000000</color>
-	<string name="title_info_contacto">Enviar oferta a</string>
-	<string name="title_cuenta_de">de</string>
-	<string name="title_lo_quiero">Lo quiero</string>
-	<string-array name="array_tipos_de_contacto">
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <string name="title_info_contacto">Enviar oferta a</string>
+    <string name="title_cuenta_de">de</string>
+    <string name="title_lo_quiero">Lo quiero</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="sincronizar">Sincronizar</string>
+    <string name="login">Ingresar</string>
+    <string name="title_activity_progress_dialog">ProgressDialog</string>
+    <string name="title_activity_dispositivos">Dispositivos</string>
+    <string name="title_activity_sincronizador">SincronizadorActivity</string>
+    <string name="title_activity_dispostivo_picker">DispostivoPickerActivity</string>
+    <string name="title_activity_sincronizador_config">SincronizadorConfigActivity</string>
+
+    <string-array name="array_tipos_de_contacto">
         <item>Teléfono</item>
         <item>Gmail</item>
         <item>Facebook</item>
@@ -16,4 +29,11 @@
         <item>Hotmail</item>
         <item>Correo</item>
     </string-array>
+
+    <string name="title_activity_config">ConfigActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_authentication">Authentication</string>
+
 </resources>

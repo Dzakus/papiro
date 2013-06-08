@@ -20,6 +20,8 @@ public class Anuncio implements Serializable {
 	
 	List<Presentacion> presentaciones;
 
+	String qrurl;
+	
 	public String getId() {
 		return id;
 	}
@@ -59,4 +61,15 @@ public class Anuncio implements Serializable {
 	public void setPresentaciones(List<Presentacion> presentaciones) {
 		this.presentaciones = presentaciones;
 	}
+
+	public String getQrurl() {
+		return qrurl;
+	}
+
+	public void setQrurl(String qrurl) {
+		this.qrurl = qrurl;
+	}
+
+	
+	
 }

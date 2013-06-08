@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="gt.com.papiro"
     android:versionCode="1"
@@ -6,25 +7,27 @@
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="15" />
-   
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-	<uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/>
-	
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" 
-        android:persistent="true" >
+        android:persistent="true"
+        android:theme="@style/AppTheme" >
         <activity
-            android:name=".main.Entrada"
-            android:label="@string/app_name" 
-            android:screenOrientation="portrait">            
+            android:name="gt.com.papiro.main.Entrada"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -47,22 +50,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-         -->
+        -->
         <activity
-            android:name=".AdDetailActivity"
+            android:name="gt.com.papiro.AdDetailActivity"
             android:label="@string/title_ad_detail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".AdListActivity" />
         </activity>
-        <activity android:name=".interactivo.Exposicion" 
-            android:hardwareAccelerated="true" 
-            android:immersive="true" 
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+        <activity
+            android:name="gt.com.papiro.interactivo.Exposicion"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:immersive="true"
             android:screenOrientation="portrait"
-            >
-            
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="gt.com.papiro.ConfigActivity"
+            android:label="@string/title_activity_config" >
+        </activity>
+        <activity
+            android:name="gt.com.papiro.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name="gt.com.papiro.Authentication"
+            android:label="@string/title_activity_authentication" >
         </activity>
     </application>
 

@@ -101,12 +101,14 @@ public class VistaPresentacionImagen extends FrameLayout implements Presentable 
 			Log.d(VistaPresentacionImagen.class.getSimpleName(), presentacion.getThumbnail().toString());
 			//this.imagen.setImageBitmap(ImageUtil.getBitmapFromUri(presentacion.getThumbnail()));
 			//this.imagen.setImageURI(presentacion.getThumbnail());
+			System.out.println(Environment.getExternalStorageDirectory() + "/ads/" + presentacion.getAnuncio().getAnunciante().getId() + "/anuncios/" + presentacion.getAnuncio().getId() + "/" + presentacion.getThumbnail());
 			this.imagen.setImageBitmap(BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/ads/" + presentacion.getAnuncio().getAnunciante().getId() + "/anuncios/" + presentacion.getAnuncio().getId() + "/" + presentacion.getThumbnail(), opts));
 			
 		} else {
 			Log.d(VistaPresentacionImagen.class.getSimpleName(), presentacion.getFullview().toString());
 			//this.imagen.setImageBitmap(ImageUtil.getBitmapFromUri(presentacion.getFullview()));
 			//this.imagen.setImageURI(presentacion.getFullview());			
+			System.out.println(Environment.getExternalStorageDirectory() + "/ads/" + presentacion.getAnuncio().getAnunciante().getId() + "/anuncios/" + presentacion.getAnuncio().getId() + "/" + presentacion.getThumbnail());
 			this.imagen.setImageBitmap(BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + "/ads/" + presentacion.getAnuncio().getAnunciante().getId() + "/anuncios/" + presentacion.getAnuncio().getId() + "/" + presentacion.getFullview(), opts));
 		}
 	}
